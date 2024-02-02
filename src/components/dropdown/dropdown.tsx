@@ -1,23 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import ArrowDown from "../../assets/icon-arrow-down.svg";
-
-enum Font {
-  SansSerif = "Sans Serif",
-  Serif = "Serif",
-  Mono = "Mono",
-}
+import { useFont } from "../../hooks";
+import { Font } from "../../enums";
 
 const Dropdown = () => {
+  const { changeFont, selectedFont } = useFont();
   const [isOpen, setIsOpen] = useState(false);
-  const [font, setFont] = useState(Font.SansSerif);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const fontStyle =
-    font === Font.SansSerif
-      ? "font-sans"
-      : font === Font.Serif
-      ? "font-serif"
-      : "font-mono";
+    selectedFont === Font.SansSerif
+      ? "Sans Serif"
+      : selectedFont === Font.Serif
+      ? "Serif"
+      : "Mono";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -42,7 +38,7 @@ const Dropdown = () => {
         className="flex items-center justify-between w-28"
         onClick={() => setIsOpen((prevState) => !prevState)}
       >
-        <p className={`font-bold ${fontStyle} text-lg`}>{font}</p>
+        <p className={`font-bold ${selectedFont} text-lg`}>{fontStyle}</p>
         <img src={ArrowDown} alt="arrow down" />
       </div>
       {isOpen && (
@@ -50,7 +46,7 @@ const Dropdown = () => {
           <li
             className="font-bold font-sans text-lg p-1 dropdown-item"
             onClick={() => {
-              setFont(Font.SansSerif);
+              changeFont(Font.SansSerif);
               setIsOpen(false);
             }}
           >
@@ -59,7 +55,7 @@ const Dropdown = () => {
           <li
             className="font-bold font-serif text-lg p-1 dropdown-item"
             onClick={() => {
-              setFont(Font.Serif);
+              changeFont(Font.Serif);
               setIsOpen(false);
             }}
           >
@@ -68,7 +64,7 @@ const Dropdown = () => {
           <li
             className="font-bold font-mono text-lg p-1 dropdown-item"
             onClick={() => {
-              setFont(Font.Mono);
+              changeFont(Font.Mono);
               setIsOpen(false);
             }}
           >

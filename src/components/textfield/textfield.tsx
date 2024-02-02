@@ -1,12 +1,14 @@
 import { useState } from "react";
 
 import search from "../../assets/icon-search.svg";
+import { useFont } from "../../hooks";
 
 type TextFieldProps = {
   warning?: boolean;
 };
 
 const TextField = ({ warning = false, ...props }: TextFieldProps) => {
+  const { selectedFont } = useFont();
   const [isFocused, setIsFocused] = useState(false);
   const borderColor = warning ? "#ff5c5c" : isFocused ? "#a445ed" : "#f4f4f4";
 
@@ -22,7 +24,7 @@ const TextField = ({ warning = false, ...props }: TextFieldProps) => {
       >
         <input
           type="text"
-          className="border-none w-full"
+          className={`border-none w-full ${selectedFont}`}
           placeholder="Search for any word..."
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
