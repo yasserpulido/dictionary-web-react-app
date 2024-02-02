@@ -18,7 +18,7 @@ const TextField = ({ warning = false, ...props }: TextFieldProps) => {
           border: `1px solid ${borderColor}`,
           color: "#2d2d2d",
         }}
-        className="flex items-center justify-between w-96 h-16 rounded-2xl py-5 px-6"
+        className="flex items-center justify-between h-16 rounded-2xl py-5 px-6"
       >
         <input
           type="text"
