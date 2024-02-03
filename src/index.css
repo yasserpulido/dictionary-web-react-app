@@ -31,3 +31,15 @@ input:focus {
 .dropdown-item:hover {
   color: #a445ed;
 }
+
+ul li {
+  margin-bottom: 0.75rem;
+}
+
+ul li::marker {
+  color: #8f19e8;
+}
+
+ul li:last-child {
+  margin-bottom: 0;
+}

@@ -1,3 +1,4 @@
-export * from "./textfield";
-export * from "./navigation";
+export * from "./detail";
 export * from "./dropdown";
+export * from "./navigation";
+export * from "./textfield";

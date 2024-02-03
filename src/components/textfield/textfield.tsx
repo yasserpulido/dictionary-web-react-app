@@ -24,6 +24,7 @@ const TextField = ({ warning = false, ...props }: TextFieldProps) => {
       >
         <input
           type="text"
+          name="search"
           className={`border-none w-full ${selectedFont}`}
           placeholder="Search for any word..."
           onFocus={() => setIsFocused(true)}
@@ -32,7 +33,7 @@ const TextField = ({ warning = false, ...props }: TextFieldProps) => {
         />
         <img src={search} alt="search" />
       </div>
-      {warning && <p className="btn-warning">Whoops, can’t be empty...</p>}
+      <p className="btn-warning h-8">{warning && "Whoops, can't be empty..."}</p>
     </div>
   );
 };
