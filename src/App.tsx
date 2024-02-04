@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { Detail, Navigation, TextField } from "./components";
+import { Detail, Navigation, NotFound, TextField } from "./components";
 import { getWordDefinition } from "./apis";
 import { Definition } from "./types";
-import { useFont } from "./hooks";
 
 function App() {
-  const { selectedFont } = useFont();
   const [textFieldError, setTextFieldError] = useState(false);
   const [wordDefinition, setWordDefinition] = useState<Array<Definition>>([]);
   const [wordNotFound, setWordNotFound] = useState(false);
@@ -33,6 +31,8 @@ function App() {
         setWordNotFound(true);
       }
     });
+
+    e.currentTarget.reset();
   };
 
   return (
@@ -41,29 +41,7 @@ function App() {
       <form onSubmit={handleSubmit} className="pt-10">
         <TextField warning={textFieldError} />
       </form>
-      {wordNotFound && (
-        <div className="text-center text-gray-500 mt-10">
-          <p className="text-6xl">😕</p>
-          <p
-            className={`mt-10 font-bold text-xl ${selectedFont}`}
-            style={{
-              color: "#2d2d2d",
-            }}
-          >
-            No Definitions Found
-          </p>
-          <p
-            className={`mt-10 text-lg ${selectedFont}`}
-            style={{
-              color: "#757575",
-            }}
-          >
-            Sorry pal, we couldn't find definitions for the word you were
-            looking for. You can try the search again at later time or head to
-            the web instead.
-          </p>
-        </div>
-      )}
+      {wordNotFound && <NotFound />}
       {wordDefinition.length > 0 && <Detail wordDefinition={wordDefinition} />}
     </div>
   );

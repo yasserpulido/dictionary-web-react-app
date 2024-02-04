@@ -31,9 +31,13 @@ const TextField = ({ warning = false, ...props }: TextFieldProps) => {
           onBlur={() => setIsFocused(false)}
           {...props}
         />
-        <img src={search} alt="search" />
+        <button type="submit" className="focus:outline-none">
+          <img src={search} alt="search" />
+        </button>
       </div>
-      <p className="btn-warning h-8">{warning && "Whoops, can't be empty..."}</p>
+      <p className="btn-warning h-8">
+        {warning && "Whoops, can't be empty..."}
+      </p>
     </div>
   );
 };

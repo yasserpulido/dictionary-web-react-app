@@ -2,6 +2,7 @@ import { Definition } from "../../types";
 import { useFont } from "../../hooks";
 import IconPlay from "../../assets/icon-play.svg";
 import IconNewWindow from "../../assets/icon-new-window.svg";
+import { useEffect, useState } from "react";
 
 type DetailProps = {
   wordDefinition: Array<Definition>;
@@ -9,11 +10,42 @@ type DetailProps = {
 
 const Detail = ({ wordDefinition }: DetailProps) => {
   const { selectedFont } = useFont();
+  const [nouns, setNouns] = useState<{
+    definitions: Array<string>;
+    synonyms: Array<string>;
+  } | null>(null);
+  const [verbs, setVerbs] = useState<Array<{
+    definition: string;
+    example: string;
+  }> | null>(null);
 
   const playAudio = () => {
     const audio = new Audio(wordDefinition[0].phonetics[0].audio);
     audio.play();
   };
+
+  useEffect(() => {
+    console.log("wordDefinition: ", wordDefinition);
+    wordDefinition[0].meanings.forEach((meaning) => {
+      if (meaning.partOfSpeech === "noun") {
+        setNouns({
+          definitions: meaning.definitions.map(
+            (definition) => definition.definition
+          ),
+          synonyms: meaning.synonyms,
+        });
+      }
+
+      if (meaning.partOfSpeech === "verb") {
+        setVerbs(
+          meaning.definitions.map((definition) => ({
+            definition: definition.definition,
+            example: definition.example,
+          }))
+        );
+      }
+    });
+  }, [wordDefinition]);
 
   return (
     <main
@@ -46,100 +78,107 @@ const Detail = ({ wordDefinition }: DetailProps) => {
           </figure>
         )}
       </section>
-      <section className="pt-10">
-        <article>
-          <header className="flex items-center justify-between gap-8">
-            <p className={`font-bold italic text-2xl ${selectedFont}`}>
-              {wordDefinition[0].meanings[0].partOfSpeech}
-            </p>
-            <hr className="grow" />
-          </header>
-          <div className="pt-10">
-            <p
-              className={`text-xl ${selectedFont}`}
-              style={{
-                color: "#757575",
-              }}
-            >
-              Meaning
-            </p>
-            <ul className="list-disc list-outside mt-6">
-              {wordDefinition[0].meanings[0].definitions.map((definition) => (
-                <li
-                  key={definition.definition}
-                  className={`text-lg ml-10 pl-5 ${selectedFont}`}
+      {nouns && (
+        <section className="pt-10">
+          <article>
+            <header className="flex items-center justify-between gap-8">
+              <p className={`font-bold italic text-2xl ${selectedFont}`}>
+                nouns
+              </p>
+              <hr className="grow" />
+            </header>
+            {nouns.definitions.length > 0 && (
+              <div className="pt-10">
+                <p
+                  className={`text-xl ${selectedFont}`}
+                  style={{
+                    color: "#757575",
+                  }}
                 >
-                  {definition.definition}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="pt-10 flex">
-            <p
-              className={`text-xl ${selectedFont}`}
-              style={{
-                color: "#757575",
-              }}
-            >
-              Synonyms
-            </p>
-            <ul className="flex ml-5">
-              {wordDefinition[0].meanings[0].synonyms &&
-                wordDefinition[0].meanings[0].synonyms.map((synonym) => (
-                  <li
-                    key={synonym}
-                    className={`text-xl ml-5 mb-0 font-bold ${selectedFont} hover:underline cursor-pointer`}
-                    style={{
-                      color: "#8f19e8",
-                    }}
-                  >
-                    {synonym}
-                  </li>
-                ))}
-            </ul>
-          </div>
-        </article>
-      </section>
-      <section className="pt-10">
-        <article>
-          <header className="flex items-center justify-between gap-8">
-            <p className={`font-bold italic text-2xl ${selectedFont}`}>
-              {wordDefinition[0].meanings[1].partOfSpeech}
-            </p>
-            <hr className="grow" />
-          </header>
-          <div className="pt-10">
-            <p
-              className={`text-xl ${selectedFont}`}
-              style={{
-                color: "#757575",
-              }}
-            >
-              Meaning
-            </p>
-            <ul className="list-disc list-outside mt-6">
-              {wordDefinition[0].meanings[1].definitions.map((definition) => (
-                <li
-                  key={definition.definition}
-                  className={`text-lg ml-10 pl-5 ${selectedFont}`}
+                  Meaning
+                </p>
+                <ul className="list-disc list-outside mt-6">
+                  {nouns.definitions.map((definition) => (
+                    <li
+                      key={definition}
+                      className={`text-lg ml-10 pl-5 ${selectedFont}`}
+                    >
+                      {definition}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {nouns.synonyms.length > 0 && (
+              <div className="pt-10 flex">
+                <p
+                  className={`text-xl ${selectedFont}`}
+                  style={{
+                    color: "#757575",
+                  }}
                 >
-                  <p>{definition.definition}</p>
-                  {definition.example && (
-                    <p
-                      className={`text-lg mt-3 ${selectedFont}`}
+                  Synonyms
+                </p>
+                <ul className="flex ml-5 flex-wrap">
+                  {nouns.synonyms.map((synonym, index) => (
+                    <li
+                      key={`${index}-${synonym}`}
+                      className={`text-xl ml-5 mb-0 font-bold ${selectedFont} hover:underline cursor-pointer`}
                       style={{
-                        color: "#757575",
+                        color: "#8f19e8",
                       }}
                     >
-                      "{definition.example}"
-                    </p>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </article>
-      </section>
+                      {synonym}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </article>
+        </section>
+      )}
+      {verbs && (
+        <section className="pt-10">
+          <article>
+            <header className="flex items-center justify-between gap-8">
+              <p className={`font-bold italic text-2xl ${selectedFont}`}>
+                verbs
+              </p>
+              <hr className="grow" />
+            </header>
+            <div className="pt-10">
+              <p
+                className={`text-xl ${selectedFont}`}
+                style={{
+                  color: "#757575",
+                }}
+              >
+                Meaning
+              </p>
+              <ul className="list-disc list-outside mt-6">
+                {verbs.map((verb) => (
+                  <li
+                    key={verb.definition}
+                    className={`text-lg ml-10 pl-5 ${selectedFont}`}
+                  >
+                    <p>{verb.definition}</p>
+                    {verb.example && (
+                      <p
+                        className={`text-lg mt-3 ${selectedFont}`}
+                        style={{
+                          color: "#757575",
+                        }}
+                      >
+                        "{verb.example}"
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        </section>
+      )}
       <section className="pt-10">
         <hr />
         <footer className="flex mt-3">
