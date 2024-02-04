@@ -1,5 +1,5 @@
 import { Definition } from "../../types";
-import { useFont } from "../../hooks";
+import { useFont, useTheme } from "../../hooks";
 import IconPlay from "../../assets/icon-play.svg";
 import IconNewWindow from "../../assets/icon-new-window.svg";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ type DetailProps = {
 };
 
 const Detail = ({ wordDefinition }: DetailProps) => {
+  const { theme } = useTheme();
   const { selectedFont } = useFont();
   const [nouns, setNouns] = useState<{
     definitions: Array<string>;
@@ -19,13 +20,14 @@ const Detail = ({ wordDefinition }: DetailProps) => {
     example: string;
   }> | null>(null);
 
+  const isDarkMode = theme === "dark-mode";
+
   const playAudio = () => {
     const audio = new Audio(wordDefinition[0].phonetics[0].audio);
     audio.play();
   };
 
   useEffect(() => {
-    console.log("wordDefinition: ", wordDefinition);
     wordDefinition[0].meanings.forEach((meaning) => {
       if (meaning.partOfSpeech === "noun") {
         setNouns({
@@ -51,7 +53,7 @@ const Detail = ({ wordDefinition }: DetailProps) => {
     <main
       className="pt-2"
       style={{
-        color: "#2d2d2d",
+        color: isDarkMode ? "#ffffff" : "#2d2d2d",
       }}
     >
       <section className="flex items-center justify-between">

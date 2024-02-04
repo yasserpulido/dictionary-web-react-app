@@ -1,24 +1,33 @@
 import { useState } from "react";
 
 import search from "../../assets/icon-search.svg";
-import { useFont } from "../../hooks";
+import { useFont, useTheme } from "../../hooks";
 
 type TextFieldProps = {
   warning?: boolean;
 };
 
 const TextField = ({ warning = false, ...props }: TextFieldProps) => {
+  const { theme } = useTheme();
   const { selectedFont } = useFont();
   const [isFocused, setIsFocused] = useState(false);
-  const borderColor = warning ? "#ff5c5c" : isFocused ? "#a445ed" : "#f4f4f4";
+  const isDarkMode = theme === "dark-mode";
+
+  const borderColor = warning
+    ? "#ff5c5c"
+    : isFocused
+    ? "#a445ed"
+    : isDarkMode
+    ? "#1f1f1f"
+    : "#f4f4f4";
 
   return (
     <div>
       <div
         style={{
-          backgroundColor: "#f4f4f4",
+          backgroundColor: isDarkMode ? "#1f1f1f" : "#f4f4f4",
           border: `1px solid ${borderColor}`,
-          color: "#2d2d2d",
+          color: isDarkMode ? "#ffffff" : "#2d2d2d",
         }}
         className="flex items-center justify-between h-16 rounded-2xl py-5 px-6"
       >

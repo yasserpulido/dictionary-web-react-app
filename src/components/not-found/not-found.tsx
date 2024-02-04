@@ -1,7 +1,9 @@
-import { useFont } from "../../hooks";
+import { useFont, useTheme } from "../../hooks";
 
 const NotFound = () => {
+  const { theme } = useTheme();
   const { selectedFont } = useFont();
+  const isDarkMode = theme === "dark-mode";
 
   return (
     <div className="text-center text-gray-500 mt-10">
@@ -9,7 +11,7 @@ const NotFound = () => {
       <p
         className={`mt-10 font-bold text-xl ${selectedFont}`}
         style={{
-          color: "#2d2d2d",
+          color: isDarkMode ? "#ffffff" : "#2d2d2d",
         }}
       >
         No Definitions Found
