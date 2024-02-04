@@ -2,12 +2,12 @@ import { createContext, useEffect, useState } from "react";
 
 export type ThemeContextType = {
   theme: string;
-  toggleTheme: (isChecked: boolean) => void;
+  toggleTheme: () => void;
 };
 
 export const ThemeContext = createContext({
   theme: "light-mode",
-  toggleTheme: (isChecked: boolean) => {},
+  toggleTheme: () => {},
 });
 
 type ThemeProviderProps = {
@@ -34,8 +34,8 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     };
   }, []);
 
-  const toggleTheme = (isChecked: boolean) => {
-    setTheme(isChecked ? "dark-mode" : "light-mode");
+  const toggleTheme = () => {
+    setTheme(theme === "light-mode" ? "dark-mode" : "light-mode");
   };
 
   return (

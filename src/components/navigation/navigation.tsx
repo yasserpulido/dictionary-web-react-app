@@ -19,7 +19,7 @@ const Navigation = () => {
               <input
                 type="checkbox"
                 defaultChecked={isDarkMode}
-                onClick={(e) => toggleTheme(e.currentTarget.checked)}
+                onClick={toggleTheme}
               />
               <span className="slider round"></span>
             </label>
